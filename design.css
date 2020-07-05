@@ -9,19 +9,23 @@ html, body{
 }
 #canvasContainer{
     margin: 0 auto;
-    display: block;
     position: relative;
-    height: 450px;
+    height: 550px;
     width: 800px;
 }
 canvas{
     background-color: white;
 }
 button{
-    border: none;
+    position: relative;
+    top: 20px;
+    margin: 0 10px;
+    border: white 2px solid;
     outline: none;
     user-select: none;
-    border-radius: 12px;
-    height: 24px;
-    width: 80px;
+    border-radius: 20px;
+    height: 40px;
+    width: 100px;
+    background-color: transparent;
+    color: white;
 }

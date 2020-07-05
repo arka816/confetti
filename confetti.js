@@ -71,7 +71,7 @@ function Confetti(x, y, size, alpha){
     this.alpha = alpha;
 
     this.omega = Math.PI / 2;
-    this.yspeed = 20 + Math.random() * 30;
+    this.yspeed = 40 + Math.random() * 30;
     this.xspeed = 12 + Math.random() * 14;
     this.angle = DEG_TO_RAD * Math.round(Math.random() * 360);
     this.skew = Math.random() * 20 - 10;
