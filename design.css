@@ -1,0 +1,19 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+#canvasContainer{
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    height: 450px;
+    width: 800px;
+}
+canvas{
+    background-color: white;
+}
