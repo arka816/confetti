@@ -17,3 +17,11 @@ html, body{
 canvas{
     background-color: white;
 }
+button{
+    border: none;
+    outline: none;
+    user-select: none;
+    border-radius: 12px;
+    height: 24px;
+    width: 80px;
+}

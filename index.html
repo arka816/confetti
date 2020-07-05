@@ -5,9 +5,11 @@
         <link rel="stylesheet" href="design.css">
         <script src="confetti.js"></script>
     </head>
-    <body onload="start()">
+    <body onload="confettiCanvas.initiate()">
         <div id="canvasContainer">
-            <canvas onload="start()" id="confetticanvas" width="800" height="450" />
+            <canvas id="confetticanvas" width="800" height="450" />
         </div>
+        <button onclick="confettiCanvas.start()">START</button>
+        <button onclick="confettiCanvas.stop()">STOP</button>
     </body>
 </html>

@@ -2,7 +2,7 @@ const PI = Math.PI;
 const DEG_TO_RAD = PI / 180;
 var canvas, g;
 var confettiArray = new Array();
-var duration = 60;
+var updateInterval = 17;
 const colorArray = [
     ["#4287f5", "#cad4e3"],
     ["#59b319", "#a9db86"],
@@ -14,7 +14,6 @@ const colorArray = [
 ]
 const confettiCount = 200;
 const gammaCorrection = 0.6;
-
 var canvasBoundX, canvasBoundY;
 
 function Vector(x, y){
@@ -112,27 +111,43 @@ function Confetti(x, y, size, alpha){
     }
 }
 
-function transformAlphaGamma(x){
-    return Math.pow(x+1, gammaCorrection) / Math.pow(confettiCount, gammaCorrection);
-}
-
-function start(){
-    canvas = document.getElementById('confetticanvas');
-    g = canvas.getContext('2d');
-    canvasBoundX = canvas.width;
-    canvasBoundY = canvas.height;
-
-    for(let i of Array(confettiCount).keys()){
-        var posX = Math.round(Math.random() * canvasBoundX);
-        var posY = -canvas.height * Math.random();
-        var alpha = 0.5 + 0.5 * transformAlphaGamma(i);
-        confettiArray.push(new Confetti(posX, posY, 2 + 4 * i / confettiCount, alpha));
-    }
-    setInterval(function(){
+var confettiCanvas = {
+    animationState : false,
+    globalID : '',
+    transformAlphaGamma : function(x){
+        return Math.pow(x+1, gammaCorrection) / Math.pow(confettiCount, gammaCorrection);
+    },
+    animate : function(){
         g.clearRect(0, 0, canvas.width, canvas.height);
         confettiArray.forEach((confetti) => {
-            confetti.update(duration/1000);
+            confetti.update(updateInterval/1000);
             confetti.draw();
-        })
-    }, duration);
+        });
+        confettiCanvas.globalID = requestAnimationFrame(confettiCanvas.animate);
+    },
+    initiate : function(){
+        canvas = document.getElementById('confetticanvas');
+        g = canvas.getContext('2d');
+        canvasBoundX = canvas.width;
+        canvasBoundY = canvas.height;
+
+        for(let i of Array(confettiCount).keys()){
+            var posX = Math.round(Math.random() * canvasBoundX);
+            var posY = -canvas.height * Math.random();
+            var alpha = 0.5 + 0.5 * this.transformAlphaGamma(i);
+            confettiArray.push(new Confetti(posX, posY, 2 + 4 * i / confettiCount, alpha));
+        }
+    },
+    start : function(){
+        if(!confettiCanvas.animationState){
+            confettiCanvas.globalID = requestAnimationFrame(this.animate);
+            confettiCanvas.animationState = true;
+        }
+    },
+    stop : function(){
+        if(confettiCanvas.animationState){
+            cancelAnimationFrame(confettiCanvas.globalID);
+            confettiCanvas.animationState = false;
+        }
+    }
 }
