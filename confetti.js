@@ -3,15 +3,7 @@ const DEG_TO_RAD = PI / 180;
 var canvas, g;
 var confettiArray = new Array();
 var updateInterval = 17;
-const colorArray = [
-    ["#4287f5", "#cad4e3"],
-    ["#59b319", "#a9db86"],
-    ["#f20a0a", "#e07272"],
-    ["#121ea1", "#6970bf"],
-    ["#01031c", "#33384f"],
-    ["#f0d41d", "#d6cd94"],
-    ["#ab0e5c", "#c997b0"]
-]
+const colorArray = ["#1e90ff", "#6b8e23", "#FFD700", "#FFC0CB", "#6a5acd", "#add8e6", "#7f00ff", "#98fb98", "#4682b4", "#f4a460", "#d2691e", "#dc143c"]
 const confettiCount = 200;
 const gammaCorrection = 0.6;
 var canvasBoundX, canvasBoundY;
@@ -59,22 +51,21 @@ Vector.distance = function(vec1, vec2){
 }
 
 
-function Confetti(x, y, size, alpha){
+function Confetti(x, y, size, alpha, speed){
     this.pos = new Vector(x, y);
     this.corners = new Array();
-    this.size = size + Math.random() * 4;
+    this.size = size + Math.random() * 8;
     this.time = Math.random() * 4;
 
     var r = Math.round(Math.random() * (colorArray.length - 1));
-    this.frontColor = colorArray[r][0];
-    this.backColor = colorArray[r][1];
+    this.frontColor = colorArray[r];
     this.alpha = alpha;
 
     this.omega = Math.PI / 2;
-    this.yspeed = 40 + Math.random() * 30;
+    this.yspeed = speed;
     this.xspeed = 12 + Math.random() * 14;
-    this.angle = DEG_TO_RAD * Math.round(Math.random() * 360);
-    this.skew = Math.random() * 20 - 10;
+    this.angle = DEG_TO_RAD * (Math.random() * 60 - 30);
+    this.skew = Math.random() * 10 + 10;
     this.rotation = DEG_TO_RAD * Math.random() * 360;
     this.rotationSpeed = 200 + 400 * Math.random();
     this.cosA = 1.0;
@@ -98,8 +89,7 @@ function Confetti(x, y, size, alpha){
     }
     this.draw = function(){
         g.globalAlpha = this.alpha;
-        if(this.cosA > 0)g.fillStyle = this.frontColor;
-        else g.fillStyle = this.backColor;
+        g.fillStyle = this.frontColor;
         
         g.beginPath();
         g.moveTo((this.pos.x + this.corners[0].x * this.size), (this.pos.y + this.corners[0].y * this.size * this.cosA));
@@ -115,7 +105,7 @@ var confettiCanvas = {
     animationState : false,
     globalID : '',
     transformAlphaGamma : function(x){
-        return Math.pow(x+1, gammaCorrection) / Math.pow(confettiCount, gammaCorrection);
+        return Math.floor(x * 5/ confettiCount) / 10 + 0.1;
     },
     animate : function(){
         g.clearRect(0, 0, canvas.width, canvas.height);
@@ -134,8 +124,10 @@ var confettiCanvas = {
         for(let i of Array(confettiCount).keys()){
             var posX = Math.round(Math.random() * canvasBoundX);
             var posY = -canvas.height * Math.random();
-            var alpha = 0.5 + 0.5 * this.transformAlphaGamma(i);
-            confettiArray.push(new Confetti(posX, posY, 2 + 4 * i / confettiCount, alpha));
+            var alpha = 0.5 + this.transformAlphaGamma(i);
+            var speed = 150 + 2 * i + Math.random() * 50;
+            console.log(alpha);
+            confettiArray.push(new Confetti(posX, posY, 4 + 4 * i / confettiCount, alpha, speed));
         }
     },
     start : function(){

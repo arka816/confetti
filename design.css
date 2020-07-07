@@ -14,7 +14,7 @@ html, body{
     width: 800px;
 }
 canvas{
-    background-color: white;
+    background-color: #1F2227;
 }
 button{
     position: relative;
